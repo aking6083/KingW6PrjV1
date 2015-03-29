@@ -22,16 +22,16 @@ public class Book
     
   */
     
-    public void setAuthors(String authorName) throws NullPointerException
+    public void setAuthors(LinkedList<String> authors) throws NullPointerException
     {
         try //See if the LinkedList has been made yet 
         {
-            this.authors.add(authorName); //Will fail on un-instaniated lists
+            this.authors = authors; //Will fail on un-instaniated lists
         }
         catch(NullPointerException npe)
         {
             authors = new LinkedList<String>();
-            this.authors.add(authorName);
+            this.authors = authors;
         }
     }
     
@@ -80,6 +80,7 @@ public class Book
         //Validate the data members
                 
         //Validate author is not empty
+        
         if (this.authors != null && !this.authors.isEmpty())
             validAuthor = true;
                         
