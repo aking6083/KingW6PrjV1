@@ -71,6 +71,16 @@ public class Book
       @return true if all fields are valid.
     */
     
+    @Override
+    
+    public String toString()
+    {
+        String retString  = "";
+        
+ 
+    }
+    
+    
     public Boolean validate()
     {
         boolean validAuthor = false;
