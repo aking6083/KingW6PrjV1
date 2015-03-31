@@ -5,6 +5,10 @@
  */
 package presentation;
 
+import domain.Book;
+import java.util.LinkedList;
+import java.util.Set;
+
 /**
  *
  * @author Adam
@@ -35,9 +39,10 @@ public class BookMgrGUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        titleTxtField = new javax.swing.JTextField();
+        authorTxtField = new javax.swing.JTextField();
+        isbnField = new javax.swing.JTextField();
+        statusLbl = new javax.swing.JLabel();
         BkMgrActionPnl = new javax.swing.JPanel();
         AddBookBtn = new javax.swing.JButton();
         ClrFieldsBtn = new javax.swing.JButton();
@@ -59,7 +64,7 @@ public class BookMgrGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
         LibHeadPnlLayout.setVerticalGroup(
             LibHeadPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,9 +83,9 @@ public class BookMgrGUI extends javax.swing.JFrame {
 
         jLabel6.setText("ISBN");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        isbnField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                isbnFieldActionPerformed(evt);
             }
         });
 
@@ -95,7 +100,7 @@ public class BookMgrGUI extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3))
+                        .addComponent(isbnField))
                     .addComponent(jLabel3)
                     .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
                         .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,27 +108,34 @@ public class BookMgrGUI extends javax.swing.JFrame {
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(titleTxtField)
+                            .addComponent(authorTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(statusLbl)
+                .addGap(68, 68, 68))
         );
         BkMgrAddBkPnlLayout.setVerticalGroup(
             BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(titleTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(statusLbl)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(authorTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(isbnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -185,12 +197,31 @@ public class BookMgrGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBookBtnActionPerformed
-        // TODO add your handling code here:
+        LinkedList<String> authors = new LinkedList<>();
+        String tempStr = authorTxtField.getText();
+        String[] arAuthors = tempStr.split(";");
+        for (int a = 0;a<=arAuthors.length;a++)
+        {
+            authors.add(arAuthors[a]);
+        }
+     
+        Book newBook = new Book();
+        newBook.setTitle(titleTxtField.getText());
+        newBook.setAuthors(authors);
+        newBook.setIsbn(isbnField.getText());
+        
+        if (newBook.validate())
+            this.statusLbl.setText("Valid Book Object");
+        else
+            this.statusLbl.setText("In-Valid Book Object");
+        
+        
+        
     }//GEN-LAST:event_AddBookBtnActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void isbnFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isbnFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_isbnFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,14 +264,15 @@ public class BookMgrGUI extends javax.swing.JFrame {
     private javax.swing.JPanel BkMgrAddBkPnl;
     private javax.swing.JButton ClrFieldsBtn;
     private javax.swing.JPanel LibHeadPnl;
+    private javax.swing.JTextField authorTxtField;
+    private javax.swing.JTextField isbnField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel statusLbl;
+    private javax.swing.JTextField titleTxtField;
     // End of variables declaration//GEN-END:variables
 }
