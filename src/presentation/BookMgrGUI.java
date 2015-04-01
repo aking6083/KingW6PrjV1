@@ -7,6 +7,7 @@ package presentation;
 
 import domain.Book;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Set;
 
 /**
@@ -42,7 +43,8 @@ public class BookMgrGUI extends javax.swing.JFrame {
         titleTxtField = new javax.swing.JTextField();
         authorTxtField = new javax.swing.JTextField();
         isbnField = new javax.swing.JTextField();
-        statusLbl = new javax.swing.JLabel();
+        statusLbl = new java.awt.TextArea();
+        statusLbl2 = new javax.swing.JLabel();
         BkMgrActionPnl = new javax.swing.JPanel();
         AddBookBtn = new javax.swing.JButton();
         ClrFieldsBtn = new javax.swing.JButton();
@@ -64,7 +66,7 @@ public class BookMgrGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(253, Short.MAX_VALUE))
         );
         LibHeadPnlLayout.setVerticalGroup(
             LibHeadPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,45 +91,40 @@ public class BookMgrGUI extends javax.swing.JFrame {
             }
         });
 
+        statusLbl2.setText("Book Status");
+
         javax.swing.GroupLayout BkMgrAddBkPnlLayout = new javax.swing.GroupLayout(BkMgrAddBkPnl);
         BkMgrAddBkPnl.setLayout(BkMgrAddBkPnlLayout);
         BkMgrAddBkPnlLayout.setHorizontalGroup(
             BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(isbnField))
+                .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
                         .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(isbnField)
                             .addComponent(titleTxtField)
                             .addComponent(authorTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(statusLbl)
-                .addGap(68, 68, 68))
+                .addGap(29, 29, 29)
+                .addComponent(statusLbl2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         BkMgrAddBkPnlLayout.setVerticalGroup(
             BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
-                .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(titleTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(BkMgrAddBkPnlLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(statusLbl)))
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(titleTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(statusLbl2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(BkMgrAddBkPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -200,20 +197,32 @@ public class BookMgrGUI extends javax.swing.JFrame {
         LinkedList<String> authors = new LinkedList<>();
         String tempStr = authorTxtField.getText();
         String[] arAuthors = tempStr.split(";");
-        for (int a = 0;a<=arAuthors.length;a++)
+               
+        for (int a = 0;a<=arAuthors.length-1;a++)
+        try 
         {
+            
             authors.add(arAuthors[a]);
+        }
+        catch (ArrayIndexOutOfBoundsException oob)
+        {
+             authors.add(tempStr);
         }
      
         Book newBook = new Book();
         newBook.setTitle(titleTxtField.getText());
         newBook.setAuthors(authors);
         newBook.setIsbn(isbnField.getText());
+       
         
         if (newBook.validate())
-            this.statusLbl.setText("Valid Book Object");
+        {
+            
+            this.statusLbl2.setText(newBook.toString());
+            
+        }
         else
-            this.statusLbl.setText("In-Valid Book Object");
+            this.statusLbl2.setText("In-Valid Book Object");
         
         
         
@@ -272,7 +281,8 @@ public class BookMgrGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel statusLbl;
+    private java.awt.TextArea statusLbl;
+    private javax.swing.JLabel statusLbl2;
     private javax.swing.JTextField titleTxtField;
     // End of variables declaration//GEN-END:variables
 }
