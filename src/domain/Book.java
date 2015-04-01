@@ -75,8 +75,22 @@ public class Book
     
     public String toString()
     {
-        String retString  = "";
+        
+        String strAuthors = "";
+        String retString = "";
+        ListIterator<String> itr = authors.listIterator();
+        while (itr.hasNext())
+        {
+            strAuthors += itr.next() + " ";
+        }
+        strAuthors.trim();
+        retString = "Title: " + this.title + "\n" +
+                    "Authors " + strAuthors + "\n" +
+                    "ISBN: " + this.isbn;
+                
+        System.out.println(retString);
         return retString;
+         
  
     }
     
