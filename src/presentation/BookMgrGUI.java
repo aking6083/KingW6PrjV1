@@ -209,8 +209,8 @@ public class BookMgrGUI extends javax.swing.JFrame {
         
         if (newBook.validate())
         {
-            
-            this.statusLbl2.setText(newBook.toString());
+            bookSvc.add(newBook);
+            this.statusLbl2.setText(newBook.toString() + "has been written");
             
         }
         else

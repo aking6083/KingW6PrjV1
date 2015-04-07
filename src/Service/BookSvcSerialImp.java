@@ -5,12 +5,16 @@
  */
 package Service;
 import domain.*;
-import presentation.BookMgrGUI; //make the text fields visible.
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+//make the text fields visible.
 /**
  *
  * @author root
  */
-public class BookSvcSerialImp implements IBookSvc 
+public class BookSvcSerialImp implements IBookSvc, Serializable
 {
 
     @Override
@@ -27,7 +31,19 @@ public class BookSvcSerialImp implements IBookSvc
 
     @Override
     public Book add(Book b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("thisFile"));
+            output.writeObject(b);
+            output.flush();
+            output.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(BookSvcSerialImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        
+    return b;
     }
 
     @Override
