@@ -5,6 +5,8 @@
  */
 package presentation;
 
+import Service.Factory;
+import Service.IBookSvc;
 import domain.Book;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -194,26 +196,16 @@ public class BookMgrGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBookBtnActionPerformed
-        LinkedList<String> authors = new LinkedList<>();
-        String tempStr = authorTxtField.getText();
-        String[] arAuthors = tempStr.split(";");
-               
-        for (int a = 0;a<=arAuthors.length-1;a++)
-        try 
-        {
-            
-            authors.add(arAuthors[a]);
-        }
-        catch (ArrayIndexOutOfBoundsException oob)
-        {
-             authors.add(tempStr);
-        }
+        
      
-        Book newBook = new Book();
-        newBook.setTitle(titleTxtField.getText());
-        newBook.setAuthors(authors);
-        newBook.setIsbn(isbnField.getText());
-       
+        Factory factory = new Factory();
+        IBookSvc bookSvc = factory.getBookSvc();
+        Book newBook = bookSvc.create(new Book());
+        LinkedList<String>bookAuthors = getAuthors();
+        //Manger creates the book then adds the book,.
+        newBook.setAuthors(bookAuthors);
+        newBook.setIsbn(this.isbnField.getText());
+        newBook.setTitle(this.titleTxtField.getText());
         
         if (newBook.validate())
         {
@@ -228,6 +220,31 @@ public class BookMgrGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_AddBookBtnActionPerformed
 
+    private LinkedList<String>getAuthors() 
+    {
+        LinkedList<String> authors = new LinkedList<>();
+        String tempStr = authorTxtField.getText();
+        String[] arAuthors = tempStr.split(";");
+               
+        for (int a = 0;a<=arAuthors.length-1;a++)
+        try 
+        {
+            
+            authors.add(arAuthors[a]);
+        }
+        catch (ArrayIndexOutOfBoundsException oob)
+        {
+             authors.add(tempStr);
+        }
+       return authors;
+    } 
+            
+            
+    public String getBookTitle()
+    {
+        return this.titleTxtField.getText();
+ 
+    }
     private void isbnFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isbnFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_isbnFieldActionPerformed
@@ -235,37 +252,17 @@ public class BookMgrGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BookMgrGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BookMgrGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BookMgrGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BookMgrGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+    
+    public static void main(String[] args)
+    {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new BookMgrGUI().setVisible(true);
             }
         });
+        
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddBookBtn;
