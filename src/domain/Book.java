@@ -4,13 +4,14 @@
                 Class will store multiple author names in a  LinkedList<String> data structure
                 
     @author Adam King
-    @version 1
+    @version 4
 */
 
 package domain;
+import java.io.*;
 import java.util.*;
 
-public class Book 
+public class Book implements Serializable
 {
     private LinkedList<String> authors;
     private String isbn;
