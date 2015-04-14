@@ -7,8 +7,8 @@ import Service.Factory;
 import Service.IBookSvc;
 import domain.Book;
 import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Set;
+//import java.util.ListIterator;
+//import java.util.Set;
 
 /**
  *
@@ -197,7 +197,7 @@ public class BookMgrGUI extends javax.swing.JFrame {
         
      
         Factory factory = new Factory();
-        IBookSvc bookSvc = factory.getBookSvc();
+        IBookSvc bookSvc = factory.getJDBCBookService();
         Book newBook = bookSvc.create(new Book());
         LinkedList<String>bookAuthors = getAuthors();
         //Manger creates the book then adds the book,.
@@ -207,9 +207,15 @@ public class BookMgrGUI extends javax.swing.JFrame {
         
         if (newBook.validate())
         {
+            try 
+            {
             bookSvc.add(newBook);
             this.statusLbl2.setText(newBook.toString() + "has been written");
-            
+            }
+            catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
         else
             this.statusLbl2.setText("In-Valid Book Object");

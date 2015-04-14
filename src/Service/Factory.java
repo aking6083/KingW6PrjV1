@@ -13,9 +13,14 @@ import java.io.*;
  * @author root
  */
 public class Factory {
-    public BookSvcSerialImp getBookSvc() {
+    public BookSvcSerialImp getSerialBookSvc() {
         
         return new BookSvcSerialImp();
+    }
+    
+    public BookSvcJDBCImpl getJDBCBookService()
+    {
+        return new BookSvcJDBCImpl();
     }
     
 }

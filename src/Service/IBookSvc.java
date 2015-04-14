@@ -12,7 +12,7 @@ import domain.*;
  */
 public interface IBookSvc {
     public Book create(Book b);
-    public Book add(Book b);
+    public Book add(Book b) throws Exception;
     public Book update(Book b);
     public Book delete(Book b);
     
