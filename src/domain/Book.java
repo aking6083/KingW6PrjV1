@@ -13,6 +13,7 @@ import java.util.*;
 
 public class Book implements Serializable
 {
+    public enum typeStr {TITLE,AUTHOR,ISBN};
     private LinkedList<String> authors;
     private String isbn;
     private String title;
@@ -72,29 +73,33 @@ public class Book implements Serializable
       @return true if all fields are valid.
     */
     
-    @Override
-    
-    public String toString()
+    public String toString(typeStr stringType)
     {
-        
         String strAuthors = "";
         String retString = "";
-        ListIterator<String> itr = authors.listIterator();
-        while (itr.hasNext())
+        switch(stringType)
         {
-            strAuthors += itr.next() + " ";
+            case TITLE:
+                retString = this.title;
+            break;
+            
+            case AUTHOR:
+                ListIterator<String> itr = authors.listIterator();
+            while (itr.hasNext())
+            {
+                strAuthors += itr.next() + " ";
+            }
+            strAuthors.trim();
+            retString = strAuthors;
+            break;
+            case ISBN:
+                retString = this.isbn;
+            break;
+            
         }
-        strAuthors.trim();
-        retString = "Title: " + this.title + "\n" +
-                    "Authors " + strAuthors + "\n" +
-                    "ISBN: " + this.isbn;
-                
-        System.out.println(retString);
-        return retString;
-         
- 
+                return retString;
+     
     }
-    
     
     public Boolean validate()
     {

@@ -14,8 +14,9 @@ import domain.*;
  */
 public class BookSvcJDBCImpl implements IBookSvc {
     
-    private String connString; //Connection string
     
+    private String connString = "jdbc:mysql://192.168.254.2:3306/test?"
+            + "user=root&password=jammin";
     private Connection getConnection() throws Exception 
     {
         //Get the connection to database
@@ -31,10 +32,20 @@ public class BookSvcJDBCImpl implements IBookSvc {
 
     @Override
     public Book add(Book b) throws Exception {
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try
         {
-            Statement myStmnt = conn.createStatement();
+            
+            String authors = b.toString(Book.typeStr.AUTHOR);
+            String title = b.toString(Book.typeStr.TITLE);
+            String isbn = b.toString(Book.typeStr.ISBN);
+            System.out.println(authors);
+            String sql = "INSERT INTO books (AuthName,title,ISBN) VALUES (?,?,?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,authors);
+            pstmt.setString(2, title);
+            pstmt.setString(3, isbn);
+            pstmt.executeUpdate();
             
         }
         catch (Exception e)
